@@ -1,3 +1,4 @@
+/* eslint-disable camelcase */
 import React, { useState } from 'react'
 import { Play } from 'phosphor-react'
 import { useForm } from 'react-hook-form'
@@ -33,6 +34,7 @@ interface Cycle {
 export function Home() {
   const [cycles, setCycles] = useState<Cycle[]>([])
   const [activeCycleId, setActiveCycleId] = useState<string | null>(null)
+  const [amountSecondsPassed, setAmountSecondsPassed] = useState<number>(0)
 
   const { register, handleSubmit, watch, reset } = useForm<NewCyclieFormData>({
     resolver: zodResolver(newCycleFormSchema),
@@ -60,6 +62,15 @@ export function Home() {
   const minutesAmount = watch('minutesAmount')
 
   const isSubmitDisabled = !task || !minutesAmount
+
+  const totalSeconds = activeCycle ? activeCycle.minutesAmount * 60 : 0
+  const currentSeconds = activeCycle ? totalSeconds - amountSecondsPassed : 0
+
+  const minutes_Amount = Math.floor(currentSeconds / 60)
+  const seconds_Amount = currentSeconds % 60
+
+  const minutes = String(minutes_Amount).padStart(2, '0')
+  const seconds = String(seconds_Amount).padStart(2, '0')
 
   return (
     <HomeContainer>
@@ -96,11 +107,11 @@ export function Home() {
         </FormContainer>
 
         <CountdownContainer>
-          <span>0</span>
-          <span>0</span>
+          <span>{minutes[0]}</span>
+          <span>{minutes[1]}</span>
           <Separator>:</Separator>
-          <span>0</span>
-          <span>0</span>
+          <span>{seconds[0]}</span>
+          <span>{seconds[1]}</span>
         </CountdownContainer>
 
         <StartCountdownButton disabled={isSubmitDisabled} type="submit">
