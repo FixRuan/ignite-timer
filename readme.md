@@ -16,6 +16,7 @@ Desenvolvido no Ignite (Rocketseat)
 
 ## Tecnologias utilizadas
     react
+    typescript
     react-hook-form
     react-router-dom
     styled-components
